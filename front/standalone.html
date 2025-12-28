@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Mean Girl</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="background-decoration">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <div class="main-interface">
+            <header class="header">
+                <button class="settings-btn" id="settingsBtn">⚙️ 设置</button>
+            </header>
+
+            <div class="content-container" id="contentContainer">
+                <div class="step-content active" id="step1">
+                    <div class="brand-section" id="brandSection">
+                        <h1 class="brand-title">Your Shopping Mean Girl</h1>
+                        <div class="brand-image">
+                            <img src="mean-girls.jpg" alt="Mean Girls" id="brandImg">
+                        </div>
+                    </div>
+
+                    <div class="step-header" id="stepHeader">
+                        <h2>Hey Gal, 你是怎样的美女</h2>
+                        <p>选一下卡片让我了解你</p>
+                    </div>
+                    
+                    <div class="questions-container" id="questionsContainer">
+                        <div class="question-section left-section">
+                            <h3>每月可自由支配的消费金额</h3>
+                            <div class="card-options vertical" id="budgetOptions">
+                                <div class="option-card" data-value="low">
+                                    <div class="card-icon">💰</div>
+                                    <div class="card-text">1000元以下</div>
+                                </div>
+                                <div class="option-card" data-value="medium-low">
+                                    <div class="card-icon">💳</div>
+                                    <div class="card-text">1000-3000元</div>
+                                </div>
+                                <div class="option-card" data-value="medium">
+                                    <div class="card-icon">💎</div>
+                                    <div class="card-text">3000-8000元</div>
+                                </div>
+                                <div class="option-card" data-value="medium-high">
+                                    <div class="card-icon">🏆</div>
+                                    <div class="card-text">8000-15000元</div>
+                                </div>
+                                <div class="option-card" data-value="high">
+                                    <div class="card-icon">👑</div>
+                                    <div class="card-text">15000元以上</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-section right-section">
+                            <h3>购买时最在意的核心驱动力</h3>
+                            <div class="card-options vertical" id="driverOptions">
+                                <div class="option-card" data-value="practical">
+                                    <div class="card-icon">🎯</div>
+                                    <div class="card-text">实用性和性价比</div>
+                                </div>
+                                <div class="option-card" data-value="emotional">
+                                    <div class="card-icon">❤️</div>
+                                    <div class="card-text">情感满足和心情调节</div>
+                                </div>
+                                <div class="option-card" data-value="social">
+                                    <div class="card-icon">👥</div>
+                                    <div class="card-text">社交需求和他人认可</div>
+                                </div>
+                                <div class="option-card" data-value="identity">
+                                    <div class="card-icon">✨</div>
+                                    <div class="card-text">身份表达和自我实现</div>
+                                </div>
+                                <div class="option-card" data-value="security">
+                                    <div class="card-icon">🛡️</div>
+                                    <div class="card-text">安全感和未来保障</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="next-btn" id="step1NextBtn" disabled>下一步</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+            
+            let selectedBudget = null;
+            let selectedDriver = null;
+
+            // 初始化
+            document.addEventListener('DOMContentLoaded', init);
+
+            function init() {
+                try {
+                    setupCardSelection();
+                    setupAnimations();
+                    setupImageError();
+                    console.log('✓ 页面初始化成功');
+                } catch (error) {
+                    console.error('初始化错误:', error);
+                }
+            }
+
+            function setupCardSelection() {
+                const budgetCards = document.querySelectorAll('#budgetOptions .option-card');
+                const driverCards = document.querySelectorAll('#driverOptions .option-card');
+                const nextBtn = document.getElementById('step1NextBtn');
+
+                if (!nextBtn) {
+                    console.error('下一步按钮未找到');
+                    return;
+                }
+
+                budgetCards.forEach(card => {
+                    card.addEventListener('click', function() {
+                        budgetCards.forEach(c => c.classList.remove('selected'));
+                        this.classList.add('selected');
+                        selectedBudget = this.dataset.value;
+                        checkComplete();
+                    });
+                });
+
+                driverCards.forEach(card => {
+                    card.addEventListener('click', function() {
+                        driverCards.forEach(c => c.classList.remove('selected'));
+                        this.classList.add('selected');
+                        selectedDriver = this.dataset.value;
+                        checkComplete();
+                    });
+                });
+
+                function checkComplete() {
+                    if (selectedBudget && selectedDriver) {
+                        nextBtn.disabled = false;
+                        console.log('✓ 选择完成:', { selectedBudget, selectedDriver });
+                    }
+                }
+
+                nextBtn.addEventListener('click', function() {
+                    if (!this.disabled) {
+                        alert('你选择了：\n预算：' + selectedBudget + '\n驱动力：' + selectedDriver + '\n\n下一步功能开发中...');
+                    }
+                });
+            }
+
+            function setupAnimations() {
+                const stepHeader = document.getElementById('stepHeader');
+                const questionsContainer = document.getElementById('questionsContainer');
+                const brandSection = document.getElementById('brandSection');
+
+                if (!stepHeader || !questionsContainer || !brandSection) {
+                    console.error('动画元素未找到');
+                    return;
+                }
+
+                function shrinkBrand() {
+                    brandSection.classList.add('shrink');
+                    stepHeader.classList.add('visible');
+                    questionsContainer.classList.add('visible');
+                }
+
+                stepHeader.addEventListener('mouseenter', shrinkBrand);
+                questionsContainer.addEventListener('mouseenter', shrinkBrand);
+
+                const contentContainer = document.getElementById('contentContainer');
+                if (contentContainer) {
+                    contentContainer.addEventListener('scroll', function() {
+                        if (this.scrollTop > 50) {
+                            shrinkBrand();
+                        }
+                    });
+                }
+            }
+
+            function setupImageError() {
+                const brandImg = document.getElementById('brandImg');
+                if (!brandImg) return;
+
+                brandImg.addEventListener('load', function() {
+                    console.log('✓ 图片加载成功');
+                });
+
+                brandImg.addEventListener('error', function() {
+                    console.warn('⚠ 图片加载失败');
+                    const placeholder = document.createElement('div');
+                    placeholder.style.cssText = `
+                        width: 100%;
+                        padding: 50px 20px;
+                        background: rgba(255, 255, 255, 0.1);
+                        border-radius: 20px;
+                        text-align: center;
+                        color: white;
+                        font-size: 16px;
+                    `;
+                    placeholder.innerHTML = '📷 图片加载失败<br><small>请确保 mean-girls.jpg 在 front 文件夹中</small>';
+                    this.parentElement.replaceChild(placeholder, this);
+                });
+            }
+
+            // 设置按钮
+            const settingsBtn = document.getElementById('settingsBtn');
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', function() {
+                    alert('设置功能开发中...\n\n当前版本是独立测试版本，不需要配置即可使用。');
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

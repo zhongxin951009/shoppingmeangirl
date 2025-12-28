@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "front/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/front/$1"
+    }
+  ],
+  "functions": {
+    "server/app.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}

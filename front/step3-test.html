@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第三步测试 - Your Shopping Mean Girl</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .debug-panel {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999;
+            max-width: 300px;
+        }
+        .debug-panel button {
+            margin: 2px;
+            padding: 5px 10px;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        .debug-panel button:hover {
+            background: #ff1493;
+        }
+        .debug-info {
+            margin: 5px 0;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-panel">
+        <div class="debug-info">第三步测试面板</div>
+        <div class="debug-info">商品: <span id="productInfo">iPhone 15 Pro Max (9999元)</span></div>
+        <div class="debug-info">阶段: <span id="stageInfo">Loading</span></div>
+        <div>
+            <button onclick="showLoading()">显示Loading</button>
+            <button onclick="showAnalysis()">显示分析</button>
+        </div>
+        <div>
+            <button onclick="generateCards()">生成卡片</button>
+            <button onclick="showDefault()">默认卡片</button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <div class="background-decoration">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <div class="main-interface">
+            <header class="header">
+                <button class="settings-btn">⚙️ 设置</button>
+            </header>
+
+            <div class="content-container">
+                <!-- 步骤3: 购买动机分析 -->
+                <div class="step-content active" id="step3">
+                    <!-- 3.1 Loading 分析阶段 -->
+                    <div class="loading-stage" id="step3Loading">
+                        <div class="loading-container">
+                            <div class="loading-spinner-container">
+                                <img src="3rdpic.jpg" alt="Mean Girls" class="loading-image" 
+                                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100px;height:100px;background:#ff69b4;border-radius:50%;animation:spin 2s linear infinite;\'></div>'">
+                                <div class="loading-text">冷静冷静...</div>
+                            </div>
+                            <div class="loading-description">
+                                <p>正在分析你的购买动机...</p>
+                                <p>让我看看这个商品有什么魔力 💭</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3.2 商品分析选择卡初始状态 -->
+                    <div class="analysis-stage" id="step3Analysis" style="display: none;">
+                        <div class="step-header">
+                            <h2>为什么想要这个？</h2>
+                            <p>选一个最戳中你内心的理由</p>
+                        </div>
+                        
+                        <div class="motivation-cards" id="motivationCards">
+                            <!-- 动态生成的卡片 -->
+                        </div>
+
+                        <div class="nav-buttons">
+                            <button class="prev-btn">上一步</button>
+                            <button class="next-btn" id="step3NextBtn" disabled>下一步</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟数据
+        const mockProductInfo = {
+            name: "北海道冬天去玩能穿的白色雪地靴",
+            price: 899
+        };
+
+        const mockUserProfile = {
+            budgetRange: "medium",
+            purchaseDriver: "practical"
+        };
+
+        function showLoading() {
+            document.getElementById('step3Loading').style.display = 'flex';
+            document.getElementById('step3Analysis').style.display = 'none';
+            document.getElementById('stageInfo').textContent = 'Loading';
+        }
+
+        function showAnalysis() {
+            document.getElementById('step3Loading').style.display = 'none';
+            document.getElementById('step3Analysis').style.display = 'block';
+            document.getElementById('stageInfo').textContent = 'Analysis';
+        }
+
+        function generateCards() {
+            // 模拟AI生成的卡片
+            const motivations = [
+                {
+                    emoji: "🔥",
+                    text: "保暖性好 jio不冷",
+                    response: "我懂"
+                },
+                {
+                    emoji: "👑", 
+                    text: "公主美丽动人只要好看就行",
+                    response: "可以"
+                },
+                {
+                    emoji: "🛡️",
+                    text: "防滑可别让我摔个大屁墩影响形象", 
+                    response: "行行行"
+                },
+                {
+                    emoji: "📸",
+                    text: "拍照好看发朋友圈必备",
+                    response: "没错"
+                }
+            ];
+            
+            renderMotivationCards(motivations);
+            showAnalysis();
+        }
+
+        function showDefault() {
+            const defaultMotivations = [
+                {
+                    emoji: "💖",
+                    text: "就是喜欢想要拥有",
+                    response: "我懂"
+                },
+                {
+                    emoji: "✨",
+                    text: "提升生活品质很重要",
+                    response: "可以"
+                },
+                {
+                    emoji: "👑",
+                    text: "好看就是硬道理",
+                    response: "没错"
+                },
+                {
+                    emoji: "🎯",
+                    text: "实用性强值得入手",
+                    response: "行行行"
+                }
+            ];
+            
+            renderMotivationCards(defaultMotivations);
+            showAnalysis();
+        }
+
+        function renderMotivationCards(motivations) {
+            const container = document.getElementById('motivationCards');
+            container.innerHTML = '';
+            
+            motivations.forEach((motivation, index) => {
+                const card = document.createElement('div');
+                card.className = 'motivation-card';
+                card.dataset.index = index;
+                card.innerHTML = `
+                    <div class="motivation-card-emoji">${motivation.emoji}</div>
+                    <div class="motivation-card-text">${motivation.text}</div>
+                    <div class="motivation-card-response">${motivation.response}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    selectMotivationCard(card, motivation);
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        function selectMotivationCard(cardElement, motivation) {
+            // 移除其他卡片的选中状态
+            document.querySelectorAll('.motivation-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 选中当前卡片
+            cardElement.classList.add('selected');
+            
+            // 启用下一步按钮
+            document.getElementById('step3NextBtn').disabled = false;
+            
+            console.log('选择了动机:', motivation);
+            document.getElementById('stageInfo').textContent = `Selected: ${motivation.text}`;
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 3秒后自动显示分析阶段
+            setTimeout(() => {
+                generateCards();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

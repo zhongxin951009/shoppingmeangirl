@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Mean Girl - 简化版</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 背景装饰 -->
+        <div class="background-decoration">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <!-- 主界面 -->
+        <div class="main-interface">
+            <!-- 头部 -->
+            <header class="header">
+                <button class="settings-btn" onclick="alert('设置功能开发中')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+                    </svg>
+                    设置
+                </button>
+            </header>
+
+            <!-- 主内容区域 -->
+            <div class="content-container" id="contentContainer">
+                <!-- 步骤1: 消费画像 -->
+                <div class="step-content active" id="step1">
+                    <!-- 第一部分：品牌形象 -->
+                    <div class="brand-section" id="brandSection">
+                        <h1 class="brand-title">Your Shopping Mean Girl</h1>
+                        <div class="brand-image">
+                            <img src="mean-girls.jpg" alt="Mean Girls" id="brandImg" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'padding:50px;text-align:center;color:white;\'>图片加载中...</div>'">
+                        </div>
+                    </div>
+
+                    <!-- 第二部分：标题 -->
+                    <div class="step-header" id="stepHeader">
+                        <h2>Hey Gal, 你是怎样的美女</h2>
+                        <p>选一下卡片让我了解你</p>
+                    </div>
+                    
+                    <!-- 第三部分：选择卡片 -->
+                    <div class="questions-container" id="questionsContainer">
+                        <div class="question-section left-section">
+                            <h3>每月可自由支配的消费金额</h3>
+                            <div class="card-options vertical" id="budgetOptions">
+                                <div class="option-card" data-value="low" onclick="selectCard(this, 'budget')">
+                                    <div class="card-icon">💰</div>
+                                    <div class="card-text">1000元以下</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="medium-low" onclick="selectCard(this, 'budget')">
+                                    <div class="card-icon">💳</div>
+                                    <div class="card-text">1000-3000元</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="medium" onclick="selectCard(this, 'budget')">
+                                    <div class="card-icon">💎</div>
+                                    <div class="card-text">3000-8000元</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="medium-high" onclick="selectCard(this, 'budget')">
+                                    <div class="card-icon">🏆</div>
+                                    <div class="card-text">8000-15000元</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="high" onclick="selectCard(this, 'budget')">
+                                    <div class="card-icon">👑</div>
+                                    <div class="card-text">15000元以上</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-section right-section">
+                            <h3>购买时最在意的核心驱动力</h3>
+                            <div class="card-options vertical" id="driverOptions">
+                                <div class="option-card" data-value="practical" onclick="selectCard(this, 'driver')">
+                                    <div class="card-icon">🎯</div>
+                                    <div class="card-text">实用性和性价比</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="emotional" onclick="selectCard(this, 'driver')">
+                                    <div class="card-icon">❤️</div>
+                                    <div class="card-text">情感满足和心情调节</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="social" onclick="selectCard(this, 'driver')">
+                                    <div class="card-icon">👥</div>
+                                    <div class="card-text">社交需求和他人认可</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="identity" onclick="selectCard(this, 'driver')">
+                                    <div class="card-icon">✨</div>
+                                    <div class="card-text">身份表达和自我实现</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="security" onclick="selectCard(this, 'driver')">
+                                    <div class="card-icon">🛡️</div>
+                                    <div class="card-text">安全感和未来保障</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="next-btn" id="step1NextBtn" disabled onclick="alert('下一步功能开发中')">下一步</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 简化的选择逻辑
+        let selections = {
+            budget: null,
+            driver: null
+        };
+
+        function selectCard(card, type) {
+            // 移除同组其他卡片的选中状态
+            const container = card.parentElement;
+            container.querySelectorAll('.option-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            
+            // 选中当前卡片
+            card.classList.add('selected');
+            selections[type] = card.dataset.value;
+            
+            // 检查是否都选择了
+            checkComplete();
+        }
+
+        function checkComplete() {
+            const nextBtn = document.getElementById('step1NextBtn');
+            if (selections.budget && selections.driver) {
+                nextBtn.disabled = false;
+            }
+        }
+
+        // 动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepHeader = document.getElementById('stepHeader');
+            const questionsContainer = document.getElementById('questionsContainer');
+            const brandSection = document.getElementById('brandSection');
+
+            function handleMouseEnter() {
+                brandSection.classList.add('shrink');
+                stepHeader.classList.add('visible');
+                questionsContainer.classList.add('visible');
+            }
+
+            stepHeader.addEventListener('mouseenter', handleMouseEnter);
+            questionsContainer.addEventListener('mouseenter', handleMouseEnter);
+            
+            // 滚动触发
+            const contentContainer = document.getElementById('contentContainer');
+            contentContainer.addEventListener('scroll', function() {
+                if (contentContainer.scrollTop > 50) {
+                    handleMouseEnter();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

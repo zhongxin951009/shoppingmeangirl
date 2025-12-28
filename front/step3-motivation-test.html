@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第三步动机卡片测试</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .test-panel {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            max-width: 300px;
+            z-index: 9999;
+        }
+        
+        .test-panel input {
+            width: 100%;
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 4px;
+            border: none;
+        }
+        
+        .test-panel button {
+            margin: 2px;
+            padding: 5px 10px;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 测试面板 -->
+        <div class="test-panel">
+            <div>第三步动机卡片测试</div>
+            <input type="text" id="testProduct" placeholder="商品名称" value="iPhone 15 Pro Max">
+            <input type="number" id="testPrice" placeholder="价格" value="9999">
+            <button onclick="testMotivationCards()">生成动机卡片</button>
+            <button onclick="showDefaultCards()">显示默认卡片</button>
+            <div id="testStatus" style="margin-top: 10px; font-size: 10px;"></div>
+        </div>
+
+        <!-- 背景装饰 -->
+        <div class="background-decoration">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <!-- 主界面 -->
+        <div class="main-interface">
+            <!-- 头部 -->
+            <header class="header">
+                <button class="settings-btn">
+                    ⚙️ 设置
+                </button>
+            </header>
+
+            <!-- 内容容器 -->
+            <div class="content-container">
+                <!-- 步骤3: 购买动机分析 -->
+                <div class="step-content active" id="step3">
+                    <!-- 3.1 Loading 分析阶段 -->
+                    <div class="loading-stage" id="step3Loading" style="display: none;">
+                        <div class="loading-container">
+                            <div class="loading-spinner-container">
+                                <img src="3rdpic.jpg" alt="Mean Girls" class="loading-image">
+                                <div class="loading-text">冷静冷静...</div>
+                            </div>
+                            <div class="loading-description">
+                                <p>正在分析你的购买动机...</p>
+                                <p>让我看看这个商品有什么魔力 💭</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3.2 商品分析选择卡初始状态 -->
+                    <div class="analysis-stage" id="step3Analysis">
+                        <div class="step-header">
+                            <h2>为什么想要这个？</h2>
+                            <p>选一个最戳中你内心的理由</p>
+                        </div>
+                        
+                        <div class="motivation-cards" id="motivationCards">
+                            <!-- 动态生成的卡片 -->
+                        </div>
+
+                        <div class="nav-buttons">
+                            <button class="prev-btn">上一步</button>
+                            <button class="next-btn" disabled>下一步</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟ConsumptionAdvisor的部分功能
+        class MotivationTester {
+            constructor() {
+                this.sessionData = {
+                    productInfo: {
+                        name: 'iPhone 15 Pro Max',
+                        price: 9999
+                    },
+                    userProfile: {
+                        budgetRange: 'medium-high',
+                        purchaseDriver: 'identity'
+                    },
+                    motivation: {}
+                };
+                this.zhipuApiKey = '';
+                this.loadConfig();
+            }
+
+            loadConfig() {
+                const config = localStorage.getItem('consumptionAdvisorConfig');
+                if (config) {
+                    const parsed = JSON.parse(config);
+                    this.zhipuApiKey = parsed.zhipuApiKey || '';
+                }
+            }
+
+            async callZhipuAPI(prompt, expectJson = false) {
+                if (!this.zhipuApiKey) {
+                    throw new Error('未配置智谱API密钥，请先在主应用中配置');
+                }
+
+                const systemContent = expectJson 
+                    ? '你是一个理性消费旁观者，帮助用户冷静分析购买决策。当需要返回JSON格式时，请确保返回有效的JSON格式。'
+                    : '你是一个理性消费旁观者，帮助用户冷静分析购买决策。请直接返回所需内容，不要使用JSON格式，不要添加引号或其他符号。';
+
+                const response = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.zhipuApiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'glm-4',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: systemContent
+                            },
+                            {
+                                role: 'user',
+                                content: prompt
+                            }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 1000
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
+            }
+
+            async generateMotivationCards() {
+                const { name, price } = this.sessionData.productInfo;
+                const { budgetRange, purchaseDriver } = this.sessionData.userProfile;
+                
+                const prompt = `用户想购买"${name}"，价格${price}元。用户消费能力：${budgetRange}，购买驱动力：${purchaseDriver}。
+
+请以"Mean Girl"的语气风格，根据这个具体商品的特性，生成3-5个购买动机选项。每个选项必须：
+1. 一个相关的emoji（要符合商品特性）
+2. 一个15字以内的理由阐述，要有态度、直接、不做作，符合Mean Girl风格
+3. 一个简短的回应词（如"我懂"、"可以"、"行行行"、"没错"、"对的"）
+
+重要：必须根据商品的具体特性来生成，不要用通用的理由。
+
+示例参考：
+用户输入："北海道冬天去玩能穿的白色雪地靴"
+- 🔥 保暖性好 jio不冷 → 我懂
+- 👑 公主美丽动人只要好看就行 → 可以  
+- 🛡️ 防滑可别让我摔个大屁墩影响形象 → 行行行
+
+请直接返回JSON格式：
+{
+  "motivations": [
+    {
+      "emoji": "🔥",
+      "text": "具体的商品相关理由",
+      "response": "回应词"
+    }
+  ]
+}`;
+
+                const response = await this.callZhipuAPI(prompt, true);
+                const data = this.parseMotivationResponse(response);
+                
+                this.renderMotivationCards(data.motivations);
+            }
+
+            parseMotivationResponse(response) {
+                try {
+                    let cleanResponse = response.trim();
+                    
+                    const jsonMatch = cleanResponse.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        cleanResponse = jsonMatch[0];
+                    }
+                    
+                    const parsed = JSON.parse(cleanResponse);
+                    
+                    if (parsed.motivations && Array.isArray(parsed.motivations)) {
+                        return parsed;
+                    } else {
+                        throw new Error('Invalid data structure');
+                    }
+                } catch (error) {
+                    console.error('解析动机回应失败:', error);
+                    console.log('原始回应:', response);
+                    return this.getDefaultMotivations();
+                }
+            }
+
+            getDefaultMotivations() {
+                return {
+                    motivations: [
+                        {
+                            emoji: "📱",
+                            text: "拍照更美颜值在线",
+                            response: "我懂"
+                        },
+                        {
+                            emoji: "✨",
+                            text: "科技感满满显得很潮",
+                            response: "可以"
+                        },
+                        {
+                            emoji: "👑",
+                            text: "苹果就是身份象征",
+                            response: "没错"
+                        },
+                        {
+                            emoji: "🔥",
+                            text: "朋友圈晒图必备神器",
+                            response: "对的"
+                        }
+                    ]
+                };
+            }
+
+            renderMotivationCards(motivations) {
+                const container = document.getElementById('motivationCards');
+                container.innerHTML = '';
+                
+                motivations.forEach((motivation, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'motivation-card';
+                    card.dataset.index = index;
+                    card.innerHTML = `
+                        <div class="motivation-card-emoji">${motivation.emoji}</div>
+                        <div class="motivation-card-text">${motivation.text}</div>
+                        <div class="motivation-card-response">${motivation.response}</div>
+                    `;
+                    
+                    card.addEventListener('click', () => {
+                        this.selectMotivationCard(card, motivation);
+                    });
+                    
+                    container.appendChild(card);
+                });
+            }
+
+            selectMotivationCard(cardElement, motivation) {
+                document.querySelectorAll('.motivation-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                
+                cardElement.classList.add('selected');
+                
+                this.sessionData.motivation = {
+                    emoji: motivation.emoji,
+                    text: motivation.text,
+                    response: motivation.response
+                };
+                
+                console.log('选择了动机:', motivation);
+            }
+        }
+
+        const tester = new MotivationTester();
+
+        async function testMotivationCards() {
+            const productName = document.getElementById('testProduct').value;
+            const price = parseFloat(document.getElementById('testPrice').value);
+            const status = document.getElementById('testStatus');
+            
+            tester.sessionData.productInfo.name = productName;
+            tester.sessionData.productInfo.price = price;
+            
+            status.textContent = '生成中...';
+            
+            try {
+                await tester.generateMotivationCards();
+                status.textContent = '生成成功！';
+            } catch (error) {
+                console.error('生成失败:', error);
+                status.textContent = '生成失败: ' + error.message;
+                showDefaultCards();
+            }
+        }
+
+        function showDefaultCards() {
+            const defaultData = tester.getDefaultMotivations();
+            tester.renderMotivationCards(defaultData.motivations);
+            document.getElementById('testStatus').textContent = '显示默认卡片';
+        }
+
+        // 初始化显示默认卡片
+        showDefaultCards();
+    </script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>步骤切换测试 - Your Shopping Mean Girl</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .debug-panel {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999;
+        }
+        .debug-panel button {
+            margin: 2px;
+            padding: 5px 10px;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .debug-panel button:hover {
+            background: #ff1493;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-panel">
+        <div>当前步骤: <span id="currentStepDisplay">1</span></div>
+        <div>
+            <button onclick="goToStep(1)">步骤1</button>
+            <button onclick="goToStep(2)">步骤2</button>
+            <button onclick="goToStep(3)">步骤3</button>
+        </div>
+        <div>
+            <button onclick="prevStep()">上一步</button>
+            <button onclick="nextStep()">下一步</button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <div class="background-decoration">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <div class="main-interface">
+            <header class="header">
+                <button class="settings-btn">⚙️ 设置</button>
+            </header>
+
+            <div class="content-container" id="contentContainer">
+                <!-- 步骤1: 消费画像 -->
+                <div class="step-content active" id="step1">
+                    <div class="brand-section" id="brandSection">
+                        <h1 class="brand-title">Your Shopping Mean Girl</h1>
+                        <div class="brand-image">
+                            <img src="mean-girls.jpg" alt="Mean Girls" id="brandImg" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'padding:50px;text-align:center;color:white;\'>图片加载中...</div>'">
+                        </div>
+                    </div>
+
+                    <div class="step-header" id="stepHeader">
+                        <h2>Hey Gal, 你是怎样的美女</h2>
+                        <p>选一下卡片让我了解你</p>
+                    </div>
+                    
+                    <div class="questions-container" id="questionsContainer">
+                        <div class="question-section left-section">
+                            <h3>每月可自由支配的消费金额</h3>
+                            <div class="card-options vertical">
+                                <div class="option-card" data-value="low">
+                                    <div class="card-icon">💰</div>
+                                    <div class="card-text">1000元以下</div>
+                                </div>
+                                <div class="option-card" data-value="medium">
+                                    <div class="card-icon">💎</div>
+                                    <div class="card-text">3000-8000元</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-section right-section">
+                            <h3>购买时最在意的核心驱动力</h3>
+                            <div class="card-options vertical">
+                                <div class="option-card" data-value="practical">
+                                    <div class="card-icon">🎯</div>
+                                    <div class="card-text">实用性和性价比</div>
+                                </div>
+                                <div class="option-card" data-value="emotional">
+                                    <div class="card-icon">❤️</div>
+                                    <div class="card-text">情感满足和心情调节</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="next-btn" onclick="nextStep()">下一步</button>
+                </div>
+
+                <!-- 步骤2: 商品信息 -->
+                <div class="step-content" id="step2">
+                    <div class="step-header">
+                        <h2>告诉我你想买什么</h2>
+                        <p>请输入商品名称和价格，支持文字、语音或图片输入</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <div class="form-group">
+                            <label for="productName">商品名称</label>
+                            <input type="text" id="productName" placeholder="例如：iPhone 15 Pro Max">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productPrice">商品价格（元）</label>
+                            <input type="number" id="productPrice" placeholder="例如：9999" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="input-methods">
+                        <button class="input-method-btn">
+                            🎤 语音输入
+                        </button>
+                        
+                        <button class="input-method-btn">
+                            📷 图片识别
+                        </button>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button class="prev-btn" onclick="prevStep()">上一步</button>
+                        <button class="next-btn" onclick="nextStep()">下一步</button>
+                    </div>
+                </div>
+
+                <!-- 步骤3: 购买动机 -->
+                <div class="step-content" id="step3">
+                    <div class="step-header">
+                        <h2>为什么现在想买？</h2>
+                        <p>是什么触发了这次购买的想法</p>
+                    </div>
+                    
+                    <div class="card-options">
+                        <div class="option-card">
+                            <div class="card-icon">🏷️</div>
+                            <div class="card-text">看到了限时优惠</div>
+                        </div>
+                        <div class="option-card">
+                            <div class="card-icon">👥</div>
+                            <div class="card-text">朋友有了我也想要</div>
+                        </div>
+                        <div class="option-card">
+                            <div class="card-icon">😔</div>
+                            <div class="card-text">心情不好想买点什么</div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button class="prev-btn" onclick="prevStep()">上一步</button>
+                        <button class="next-btn" onclick="nextStep()">下一步</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        function updateDisplay() {
+            document.getElementById('currentStepDisplay').textContent = currentStep;
+        }
+
+        function goToStep(step) {
+            if (step >= 1 && step <= totalSteps) {
+                // 隐藏当前步骤
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                
+                // 显示目标步骤
+                currentStep = step;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                
+                updateDisplay();
+                console.log(`切换到步骤 ${currentStep}`);
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                goToStep(currentStep + 1);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                goToStep(currentStep - 1);
+            }
+        }
+
+        // 第一步的动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepHeader = document.getElementById('stepHeader');
+            const questionsContainer = document.getElementById('questionsContainer');
+            const brandSection = document.getElementById('brandSection');
+
+            function handleMouseEnter() {
+                brandSection.classList.add('shrink');
+                stepHeader.classList.add('visible');
+                questionsContainer.classList.add('visible');
+            }
+
+            stepHeader.addEventListener('mouseenter', handleMouseEnter);
+            questionsContainer.addEventListener('mouseenter', handleMouseEnter);
+            
+            // 3秒后自动展开（用于测试）
+            setTimeout(handleMouseEnter, 3000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "rational-consumption-advisor",
+  "version": "1.0.0",
+  "description": "理性消费旁观者 Agent - 帮助用户理性分析购买决策",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "consumption",
+    "advisor",
+    "rational",
+    "shopping",
+    "decision"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拔草电子诡蜜 - 理性消费助手</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 背景装饰 -->
+        <div class="background-decoration">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <!-- 主界面 -->
+        <div class="main-interface">
+            <!-- 头部 -->
+            <header class="header">
+                <button class="settings-btn" id="settingsBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+                    </svg>
+                    设置
+                </button>
+            </header>
+
+            <!-- 主内容区域 -->
+            <div class="content-container" id="contentContainer">
+                <!-- 步骤1: 消费画像 -->
+                <div class="step-content active" id="step1">
+                    <!-- 第一部分：品牌形象 -->
+                    <div class="brand-section" id="brandSection">
+                        <h1 class="brand-title">拔草电子诡蜜</h1>
+                        <div class="brand-image">
+                            <img src="mean-girls.jpg" alt="Mean Girls" id="brandImg">
+                        </div>
+                    </div>
+
+                    <!-- 向下箭头引导 -->
+                    <div class="scroll-indicator" id="scrollIndicator">
+                        <div class="arrow-down">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="scroll-text">向下滑动开始分析</div>
+                    </div>
+
+                    <!-- 第二部分：标题 -->
+                    <div class="step-header" id="stepHeader">
+                        <h2>Hey Gal, 你是怎样的美女</h2>
+                        <p>选一下卡片让我了解你</p>
+                    </div>
+                    
+                    <!-- 第三部分：选择卡片 - 改为上下排列 -->
+                    <div class="questions-container" id="questionsContainer">
+                        <!-- 第一个问题 -->
+                        <div class="question-section" id="budgetSection">
+                            <h3>每月可自由支配的消费金额</h3>
+                            <div class="card-options horizontal" id="budgetOptions">
+                                <div class="option-card" data-value="low">
+                                    <div class="card-icon">💰</div>
+                                    <div class="card-text">1000元以下</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="medium-low">
+                                    <div class="card-icon">💳</div>
+                                    <div class="card-text">1000-3000元</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="medium">
+                                    <div class="card-icon">💎</div>
+                                    <div class="card-text">3000-8000元</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="medium-high">
+                                    <div class="card-icon">🏆</div>
+                                    <div class="card-text">8000-15000元</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="high">
+                                    <div class="card-icon">👑</div>
+                                    <div class="card-text">15000元以上</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 第二个问题 -->
+                        <div class="question-section" id="driverSection" style="opacity: 0.3; pointer-events: none;">
+                            <h3>购买时最在意的核心驱动力</h3>
+                            <div class="card-options horizontal" id="driverOptions">
+                                <div class="option-card" data-value="practical">
+                                    <div class="card-icon">🎯</div>
+                                    <div class="card-text">实用性和性价比</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="emotional">
+                                    <div class="card-icon">❤️</div>
+                                    <div class="card-text">情感满足和心情调节</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="social">
+                                    <div class="card-icon">👥</div>
+                                    <div class="card-text">社交需求和他人认可</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="identity">
+                                    <div class="card-icon">✨</div>
+                                    <div class="card-text">身份表达和自我实现</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="security">
+                                    <div class="card-icon">🛡️</div>
+                                    <div class="card-text">安全感和未来保障</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="next-btn" id="step1NextBtn" disabled>下一步</button>
+                </div>
+
+                <!-- 步骤2: 商品信息 -->
+                <div class="step-content" id="step2">
+                    <div class="step-header">
+                        <h2>老实交代你种的草</h2>
+                    </div>
+                    
+                    <!-- 第一个输入：商品名称 -->
+                    <div class="input-section" id="productNameSection">
+                        <div class="form-group">
+                            <label for="productName">好东西名称</label>
+                            <input type="text" id="productName" placeholder="2月去北海道穿的白色恋人风格雪地靴">
+                        </div>
+                        
+                        <div class="input-methods">
+                            <button class="input-method-btn" id="voiceInputBtn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                                </svg>
+                                口述一下
+                            </button>
+                            
+                            <button class="input-method-btn" id="imageInputBtn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21,15 16,10 5,21"></polyline>
+                                </svg>
+                                发个美美的图
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第二个输入：商品价格 -->
+                    <div class="input-section" id="productPriceSection">
+                        <div class="form-group">
+                            <label for="productPrice">多少银子</label>
+                            <input type="number" id="productPrice" placeholder="例如：9999" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+
+                    <div class="nav-buttons">
+                        <button class="prev-btn" id="step2PrevBtn">上一步</button>
+                        <button class="next-btn" id="step2NextBtn" disabled>OKK</button>
+                    </div>
+                </div>
+
+                <!-- 步骤3: 购买动机分析 -->
+                <div class="step-content" id="step3">
+                    <!-- 3.1 Loading 分析阶段 -->
+                    <div class="loading-stage" id="step3Loading">
+                        <div class="loading-container">
+                            <div class="loading-spinner-container">
+                                <img src="3rdpic.jpg" alt="Mean Girls" class="loading-image">
+                                <div class="loading-text">冷静冷静...</div>
+                            </div>
+                            <div class="loading-description">
+                                <p>正在分析你的购买动机...</p>
+                                <p>让我看看这个商品有什么魔力 💭</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3.2 商品分析选择卡初始状态 -->
+                    <div class="analysis-stage" id="step3Analysis" style="display: none;">
+                        <div class="step-header">
+                            <h2>那我可看透你了</h2>
+                            <p>选一个最戳中你内心的理由</p>
+                        </div>
+                        
+                        <div class="motivation-cards" id="motivationCards">
+                            <!-- 动态生成的卡片 -->
+                        </div>
+
+                        <div class="nav-buttons">
+                            <button class="prev-btn" id="step3PrevBtn">上一步</button>
+                            <button class="next-btn" id="step3NextBtn" disabled>下一步</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤4: 结果页 -->
+                <div class="step-content" id="step4">
+                    <!-- 4.1 Loading 分析阶段 -->
+                    <div class="loading-stage" id="step4Loading">
+                        <div class="loading-container">
+                            <div class="loading-spinner-container">
+                                <img src="change.jpg" alt="Analysis" class="loading-image" 
+                                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100px;height:100px;background:#ff69b4;border-radius:50%;animation:spin 2s linear infinite;\'></div>'">
+                                <div class="loading-text">败家娘们分析中</div>
+                            </div>
+                            <div class="loading-description">
+                                <p>正在计算你的败家指数...</p>
+                                <p>准备接受现实吧 💸</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4.2 结果内容 -->
+                    <div class="result-stage" id="step4Result" style="display: none;">
+                        <!-- 信息1: 没用等级 -->
+                        <div class="useless-score-section">
+                            <div class="score-display">
+                                <div class="score-number" id="uselessScore">85</div>
+                                <div class="score-label">没用等级</div>
+                            </div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="scoreFill"></div>
+                            </div>
+                        </div>
+
+                        <!-- 信息2: 省钱金额等式 -->
+                        <div class="money-equation-section">
+                            <div class="equation-container">
+                                <div class="equation-left">
+                                    <span class="equation-text">省下金额</span>
+                                    <span class="equation-amount" id="savedAmount">¥999</span>
+                                </div>
+                                <div class="equation-equals">=</div>
+                                <div class="equation-right" id="alternativeUse">
+                                    1顿和家人团聚的海底捞火锅
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 信息3: 毒舌点评 -->
+                        <div class="review-section">
+                            <div class="review-content" id="reviewContent">
+                                <p>亲爱的，你真的觉得这个东西能改变你的人生吗？醒醒吧！你的钱包已经在哭泣了。与其买这个华而不实的东西，不如把钱花在真正有意义的地方。相信我，一个月后你就会忘记这个东西的存在，但你的银行账户会记得这笔"智商税"。</p>
+                            </div>
+                        </div>
+
+                        <!-- 信息4: 最终决策按钮 -->
+                        <div class="decision-buttons">
+                            <button class="decision-btn listen-btn" id="listenBtn">
+                                <div class="btn-image">
+                                    <img src="button1.jpg" alt="听劝" onerror="this.style.display='none'">
+                                </div>
+                                <div class="btn-content">
+                                    <span class="btn-icon">🙏</span>
+                                    <span class="btn-text">听劝</span>
+                                </div>
+                            </button>
+                            <button class="decision-btn chop-btn" id="chopBtn">
+                                <div class="btn-image">
+                                    <img src="button2.jpg" alt="剁手" onerror="this.style.display='none'">
+                                </div>
+                                <div class="btn-content">
+                                    <span class="btn-icon">✂️</span>
+                                    <span class="btn-text">剁手</span>
+                                </div>
+                            </button>
+                            <button class="decision-btn calm-btn" id="calmBtn">
+                                <div class="btn-image">
+                                    <img src="button3.jpg" alt="我还在冷静期" onerror="this.style.display='none'">
+                                </div>
+                                <div class="btn-content">
+                                    <span class="btn-icon">🤔</span>
+                                    <span class="btn-text">我还在冷静期</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="nav-buttons">
+                            <button class="prev-btn" id="step4PrevBtn">回到上一步</button>
+                            <button class="restart-btn" id="restartBtn">重新种草</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤5: 理性分析 -->
+                <div class="step-content" id="step5">
+                    <div class="step-header">
+                        <h2>冷静分析一下</h2>
+                        <p>让我们从另一个角度看看这次购买</p>
+                    </div>
+                    
+                    <div class="analysis-content" id="analysisContent">
+                        <!-- 动态生成分析内容 -->
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button class="prev-btn" id="step5PrevBtn">上一步</button>
+                        <button class="next-btn" id="step5NextBtn">查看决策选项</button>
+                    </div>
+                </div>
+
+                <!-- 步骤6: 最终决策 -->
+                <div class="step-content" id="step6">
+                    <div class="step-header">
+                        <h2>你的决定</h2>
+                        <p>现在，选择权在你手中</p>
+                    </div>
+                    
+                    <div class="decision-options">
+                        <div class="decision-card" data-value="buy">
+                            <div class="decision-icon">🛒</div>
+                            <div class="decision-text">我还是想买</div>
+                        </div>
+                        <div class="decision-card" data-value="wait">
+                            <div class="decision-icon">⏰</div>
+                            <div class="decision-text">我想再等48小时</div>
+                        </div>
+                        <div class="decision-card" data-value="not_buy">
+                            <div class="decision-icon">💭</div>
+                            <div class="decision-text">我决定不买了</div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button class="prev-btn" id="step6PrevBtn">上一步</button>
+                        <button class="restart-btn" id="restartBtn">重新开始</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设置面板 -->
+        <div class="settings-panel" id="settingsPanel">
+            <div class="settings-content">
+                <div class="settings-header">
+                    <h2>API 配置</h2>
+                    <button class="close-btn" id="closeSettingsBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label for="supabaseUrl">Supabase URL</label>
+                        <input type="url" id="supabaseUrl" placeholder="https://your-project.supabase.co">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="supabaseKey">Supabase Anon Key</label>
+                        <input type="password" id="supabaseKey" placeholder="输入您的Supabase匿名密钥">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="zhipuApiKey">智谱 API 密钥</label>
+                        <input type="password" id="zhipuApiKey" placeholder="输入您的智谱API密钥">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modelName">模型名称</label>
+                        <select id="modelName">
+                            <option value="glm-4">GLM-4</option>
+                            <option value="glm-4-plus">GLM-4-Plus</option>
+                            <option value="glm-4-air">GLM-4-Air</option>
+                        </select>
+                    </div>
+                    
+                    <button class="save-btn" id="saveConfigBtn">保存配置</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 加载遮罩 -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">正在分析中...</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 检查 Supabase 是否加载
+        if (typeof supabase === 'undefined') {
+            console.warn('Supabase 库未加载，某些功能可能不可用');
+            window.supabase = {
+                createClient: function() {
+                    console.warn('Supabase 客户端未初始化');
+                    return null;
+                }
+            };
+        }
+    </script>
+    <script src="script.js"></script>
+    <script>
+        // 确保页面加载完成后再初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('✓ 页面加载完成');
+            });
+        } else {
+            console.log('✓ 页面已就绪');
+        }
+    </script>
+</body>
+</html>

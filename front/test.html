@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面 - Your Shopping Mean Girl</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff1493, #ff69b4, #ff1493);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 20, 147, 0.5);
+            animation: neonGlow 2s ease-in-out infinite alternate;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        @keyframes neonGlow {
+            from {
+                text-shadow: 0 0 20px rgba(255, 20, 147, 0.5),
+                             0 0 40px rgba(255, 20, 147, 0.3);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(255, 20, 147, 0.8),
+                             0 0 60px rgba(255, 20, 147, 0.5);
+            }
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            max-width: 600px;
+            height: 300px;
+            margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .card-demo {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-demo:hover {
+            background: rgba(255, 105, 180, 0.2);
+            border-color: #ff69b4;
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.3);
+        }
+        
+        .card-demo:hover::before,
+        .card-demo:hover::after {
+            content: '✨';
+            position: absolute;
+            font-size: 24px;
+            animation: float-star 1.5s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        .card-demo:hover::before {
+            top: 20%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+        
+        .card-demo:hover::after {
+            top: 50%;
+            right: 15%;
+            animation-delay: 0.75s;
+        }
+        
+        @keyframes float-star {
+            0% {
+                transform: translateY(0) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                transform: translateY(-15px) scale(1.2) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-30px) scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .instructions h2 {
+            color: #ff69b4;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Your Shopping Mean Girl</h1>
+        
+        <div class="image-placeholder">
+            请将 Mean Girls 图片保存为 mean-girls.jpg<br>
+            并放在 front 文件夹中
+        </div>
+        
+        <h2 style="text-align: center; margin-bottom: 20px;">卡片悬停效果演示</h2>
+        
+        <div class="card-demo">
+            <div style="font-size: 24px;">💰</div>
+            <div>鼠标悬停查看粉红星星动画</div>
+        </div>
+        
+        <div class="card-demo">
+            <div style="font-size: 24px;">💎</div>
+            <div>每张卡片都有独特的悬停效果</div>
+        </div>
+        
+        <div class="card-demo">
+            <div style="font-size: 24px;">✨</div>
+            <div>粉红色主题贯穿整个设计</div>
+        </div>
+        
+        <div class="instructions">
+            <h2>📝 设置说明</h2>
+            <ol>
+                <li>将你提供的 Mean Girls 图片保存为 <code>mean-girls.jpg</code></li>
+                <li>将图片文件放在 <code>front</code> 文件夹中</li>
+                <li>打开 <code>front/index.html</code> 查看完整效果</li>
+                <li>鼠标移动到"Hey Gal, 你是怎样的美女"标题时，品牌部分会缩小</li>
+                <li>悬停在卡片上会出现粉红星星动画</li>
+            </ol>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="index.html" style="
+                display: inline-block;
+                padding: 12px 24px;
+                background: linear-gradient(135deg, #ff1493, #ff69b4);
+                color: white;
+                text-decoration: none;
+                border-radius: 12px;
+                font-weight: 500;
+                box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+                transition: all 0.3s ease;
+            ">打开完整应用</a>
+        </div>
+    </div>
+</body>
+</html>

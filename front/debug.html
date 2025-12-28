@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调试页面 - Your Shopping Mean Girl</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999;
+            max-width: 300px;
+        }
+        .debug-info div {
+            margin-bottom: 5px;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+        .warning { color: #ff0; }
+    </style>
+</head>
+<body>
+    <div class="debug-info" id="debugInfo">
+        <div>🔍 调试信息</div>
+        <div id="imageStatus">图片状态: 检查中...</div>
+        <div id="elementsStatus">元素状态: 检查中...</div>
+        <div id="scriptStatus">脚本状态: 检查中...</div>
+    </div>
+
+    <div class="app-container">
+        <!-- 背景装饰 -->
+        <div class="background-decoration">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <!-- 主界面 -->
+        <div class="main-interface">
+            <!-- 头部 -->
+            <header class="header">
+                <button class="settings-btn" id="settingsBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+                    </svg>
+                    设置
+                </button>
+            </header>
+
+            <!-- 主内容区域 -->
+            <div class="content-container" id="contentContainer">
+                <!-- 步骤1: 消费画像 -->
+                <div class="step-content active" id="step1">
+                    <!-- 第一部分：品牌形象 -->
+                    <div class="brand-section" id="brandSection">
+                        <h1 class="brand-title">Your Shopping Mean Girl</h1>
+                        <div class="brand-image">
+                            <img src="mean-girls.jpg" alt="Mean Girls" id="brandImg">
+                        </div>
+                    </div>
+
+                    <!-- 第二部分：标题 -->
+                    <div class="step-header" id="stepHeader">
+                        <h2>Hey Gal, 你是怎样的美女</h2>
+                        <p>选一下卡片让我了解你</p>
+                    </div>
+                    
+                    <!-- 第三部分：选择卡片 -->
+                    <div class="questions-container" id="questionsContainer">
+                        <div class="question-section left-section">
+                            <h3>每月可自由支配的消费金额</h3>
+                            <div class="card-options vertical" id="budgetOptions">
+                                <div class="option-card" data-value="low">
+                                    <div class="card-icon">💰</div>
+                                    <div class="card-text">1000元以下</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="medium-low">
+                                    <div class="card-icon">💳</div>
+                                    <div class="card-text">1000-3000元</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="medium">
+                                    <div class="card-icon">💎</div>
+                                    <div class="card-text">3000-8000元</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-section right-section">
+                            <h3>购买时最在意的核心驱动力</h3>
+                            <div class="card-options vertical" id="driverOptions">
+                                <div class="option-card" data-value="practical">
+                                    <div class="card-icon">🎯</div>
+                                    <div class="card-text">实用性和性价比</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="emotional">
+                                    <div class="card-icon">❤️</div>
+                                    <div class="card-text">情感满足和心情调节</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                                <div class="option-card" data-value="social">
+                                    <div class="card-icon">👥</div>
+                                    <div class="card-text">社交需求和他人认可</div>
+                                    <div class="star-animation"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="next-btn" id="step1NextBtn" disabled>下一步</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 调试脚本
+        const debugInfo = {
+            imageStatus: document.getElementById('imageStatus'),
+            elementsStatus: document.getElementById('elementsStatus'),
+            scriptStatus: document.getElementById('scriptStatus')
+        };
+
+        // 检查图片
+        const img = document.getElementById('brandImg');
+        img.onload = function() {
+            debugInfo.imageStatus.innerHTML = '<span class="success">✓ 图片加载成功</span>';
+            debugInfo.imageStatus.innerHTML += `<br>尺寸: ${this.naturalWidth}x${this.naturalHeight}`;
+        };
+        img.onerror = function() {
+            debugInfo.imageStatus.innerHTML = '<span class="error">✗ 图片加载失败</span>';
+            debugInfo.imageStatus.innerHTML += '<br>路径: ' + this.src;
+        };
+
+        // 检查关键元素
+        window.addEventListener('DOMContentLoaded', () => {
+            const elements = [
+                'brandSection',
+                'stepHeader',
+                'questionsContainer',
+                'budgetOptions',
+                'driverOptions',
+                'step1NextBtn'
+            ];
+            
+            let allFound = true;
+            let status = '';
+            
+            elements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    status += `<span class="success">✓ ${id}</span><br>`;
+                } else {
+                    status += `<span class="error">✗ ${id}</span><br>`;
+                    allFound = false;
+                }
+            });
+            
+            debugInfo.elementsStatus.innerHTML = status;
+            
+            if (allFound) {
+                debugInfo.scriptStatus.innerHTML = '<span class="success">✓ 所有元素就绪</span>';
+            } else {
+                debugInfo.scriptStatus.innerHTML = '<span class="error">✗ 部分元素缺失</span>';
+            }
+        });
+
+        // 简化的脚本测试
+        document.addEventListener('DOMContentLoaded', () => {
+            const budgetOptions = document.querySelectorAll('#budgetOptions .option-card');
+            const driverOptions = document.querySelectorAll('#driverOptions .option-card');
+            const nextBtn = document.getElementById('step1NextBtn');
+            
+            let selectedBudget = null;
+            let selectedDriver = null;
+
+            budgetOptions.forEach(card => {
+                card.addEventListener('click', () => {
+                    budgetOptions.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedBudget = card.dataset.value;
+                    checkComplete();
+                });
+            });
+
+            driverOptions.forEach(card => {
+                card.addEventListener('click', () => {
+                    driverOptions.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedDriver = card.dataset.value;
+                    checkComplete();
+                });
+            });
+
+            function checkComplete() {
+                if (selectedBudget && selectedDriver) {
+                    nextBtn.disabled = false;
+                    debugInfo.scriptStatus.innerHTML = '<span class="success">✓ 交互正常工作</span>';
+                }
+            }
+
+            // 测试动画
+            const stepHeader = document.getElementById('stepHeader');
+            const questionsContainer = document.getElementById('questionsContainer');
+            const brandSection = document.getElementById('brandSection');
+
+            const handleMouseEnter = () => {
+                brandSection.classList.add('shrink');
+                stepHeader.classList.add('visible');
+                questionsContainer.classList.add('visible');
+            };
+
+            stepHeader.addEventListener('mouseenter', handleMouseEnter);
+            questionsContainer.addEventListener('mouseenter', handleMouseEnter);
+        });
+    </script>
+</body>
+</html>
